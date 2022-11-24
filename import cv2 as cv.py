@@ -4,6 +4,7 @@ import numpy as np
 import time
 import os
 import pigpio
+#test_git
 
 os.system("sudo pigpiod")  # Launching GPIO library
 time.sleep(1)
