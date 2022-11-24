@@ -21,7 +21,7 @@ print("podau signal")
 pi.set_servo_pulsewidth(ESC, 1500)
 time.sleep(2)
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 ESCAPE = 27
 key = 1
