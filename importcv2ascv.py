@@ -43,11 +43,11 @@ SIZE = (400, 300)
 while (key != ESCAPE):
     ret, frame = cap.read()
 
-   # if ret == False:
-    #    print("End of File")
-     #   break
-    #cv2.imshow("frame", frame)
-    #key = cv2.waitKey(10)
+    if ret == False:
+       print("End of File")
+       break
+    cv2.imshow("frame", frame)
+    key = cv2.waitKey(10)
 
     frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     #cv2.imshow("Gray", frame_gray)
