@@ -18,7 +18,7 @@ pi.set_servo_pulsewidth(ESC, 0)
 pi.set_servo_pulsewidth(STEER, 0)
 time.sleep(2)
 print("podau signal")
-#pi.set_servo_pulsewidth(ESC, 1500)
+pi.set_servo_pulsewidth(ESC, 1500)
 time.sleep(2)
 
 cap = cv2.VideoCapture(0)
@@ -93,7 +93,7 @@ while (key != ESCAPE):
         angle = 110 - 22
 
     pi.set_servo_pulsewidth(STEER, int(16.66666 * angle))
-    #pi.set_servo_pulsewidth(ESC, 1555)
+    pi.set_servo_pulsewidth(ESC, 1555)
 
 cv2.destroyAllWindows()
 cap.release()
