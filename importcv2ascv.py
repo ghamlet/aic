@@ -94,6 +94,7 @@ while (key != ESCAPE):
 
     pi.set_servo_pulsewidth(STEER, int(16.66666 * angle))
     pi.set_servo_pulsewidth(ESC, 1555)
+time.sleep(200)
 
 cv2.destroyAllWindows()
 cap.release()
