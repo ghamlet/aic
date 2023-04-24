@@ -9,8 +9,8 @@ import pigpio
 os.system("sudo pigpiod")  # Launching GPIO library
 
 
-ESC = 17 # драйвер двигателя, смотри на номера после GPIO
-STEER = 18 # сервопривод
+ESC = 17 
+STEER = 18 
 
 pi = pigpio.pi()
 
@@ -28,12 +28,12 @@ SIZE = (400, 300)
 
 
 
-RECT = np.float32([[0, 299], #из трапеции получаем прямоугольник
+RECT = np.float32([[0, 299], 
                    [399, 299],
                    [399, 0],
                    [0, 0]])
 
-"""чтобы воспользоваться получением перспективы нужен тип флоат"""
+
 
 TRAP = np.float32([[70, 250],     
                    [330, 250],  
@@ -50,7 +50,7 @@ cap = cv2.VideoCapture(1)
 while True:
     
     ret, frame = cap.read()
-    cv2.waitKey(1) #смена кадров
+    cv2.waitKey(1) 
 
     if ret == False:
        print("End of File")
@@ -97,7 +97,7 @@ while True:
 
 
 
-    hist = np.sum(perspective[0:200], axis=0) #axis0 сумма элементов в каждом столбце[]
+    hist = np.sum(perspective[0:200], axis=0) #axis0 
     
     center = hist.shape[0] // 2
     #print('center',center)
