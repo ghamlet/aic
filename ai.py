@@ -28,7 +28,7 @@ SIZE = (400, 300)
 
 
 
-RECT = np.float32([[0, 299], 
+RECT = np.float32([[0, 299],
                    [399, 299],
                    [399, 0],
                    [0, 0]])
@@ -50,7 +50,7 @@ cap = cv2.VideoCapture(0)
 while True:
     
     ret, frame = cap.read()
-    cv2.waitKey(1) 
+    cv2.waitKey(1)
 
     if ret == False:
        print("End of File")
@@ -97,7 +97,7 @@ while True:
 
 
 
-    hist = np.sum(perspective[0:200], axis=0) #axis0 
+    hist = np.sum(perspective[0:200], axis=0) #axis
     
     center = hist.shape[0] // 2
     #print('center',center)
