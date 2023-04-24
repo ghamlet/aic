@@ -44,7 +44,7 @@ TRAP = np.float32([[70, 250],
 
 
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 
 
 while True:
