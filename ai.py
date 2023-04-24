@@ -127,6 +127,7 @@ while True:
 
     angle = 1400 + (Error*10)
     print(angle)
+    
     #time.sleep(0.1)
 
 
@@ -134,6 +135,7 @@ while True:
 
     
     pi.set_servo_pulsewidth(STEER, int(angle))
+    time.sleep(0.2)
     #pi.set_servo_pulsewidth(ESC, 1555)
 
 
