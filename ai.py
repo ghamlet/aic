@@ -43,7 +43,7 @@ TRAP = np.float32([[70, 250],
 
 
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture("vid.mp4")
 
 
 while True:
@@ -105,8 +105,8 @@ while True:
 
     hist_l = hist[:center]
     hist_r = hist[center:]
-    print(f" {hist_l=}")
-    # hist_r={hist_r} """)
+    #print(f" {hist_l=}")
+    
 
     ind_left = np.argmax(hist_l)
     ind_right = np.argmax(hist_r) + center
