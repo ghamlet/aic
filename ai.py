@@ -49,7 +49,7 @@ cap = cv2.VideoCapture("vid.mp4")
 while True:
     
     ret, frame = cap.read()
-    cv2.waitKey(1)
+    cv2.waitKey(100)
 
     if ret == False:
        print("End of File")
@@ -65,14 +65,14 @@ while True:
     cv2.circle(frame, (330, 250), 5, (0,0,255), -1)
 
     cv2.imshow("frame", frame)
-    k = cv2.waitKey(10)
+    #k = cv2.waitKey(10)
     
     
 
     
     frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     cv2.imshow("Gray", frame_gray)
-    k = cv2.waitKey(10)
+    #k = cv2.waitKey(10)
 
     
 
@@ -80,21 +80,21 @@ while True:
     
     binary = cv2.resize(binary, SIZE)
     cv2.imshow("Binary", binary)
-    k = cv2.waitKey(10)
+   # k = cv2.waitKey(10)
 
     binary_visual = binary.copy()
 
     
     cv2.polylines(binary_visual, [np.array(TRAP, dtype=np.int32)], True, 255, 2)
     cv2.imshow("TRAP", binary_visual )
-    k = cv2.waitKey(10)
+   # k = cv2.waitKey(10)
 
     M = cv2.getPerspectiveTransform(TRAP, RECT)
 
     perspective = cv2.warpPerspective(binary, M, SIZE, flags=cv2.INTER_LINEAR)
     
     cv2.imshow("Perspective", perspective)
-    k = cv2.waitKey(10)
+    #k = cv2.waitKey(10)
 
 
 
@@ -118,7 +118,7 @@ while True:
     cv2.line(out, (ind_left, 0), (ind_left, 299), 255, 2)
     cv2.line(out, (ind_right, 0), (ind_right, 299), 255, 2)
     cv2.imshow("Lines", out)
-    k = cv2.waitKey(10)
+   # k = cv2.waitKey(10)
 
     center_road = (ind_left + ind_right) // 2
     #print("center_road",center_road)
@@ -131,15 +131,17 @@ while True:
     print(angle)
 
     if angle < 510 or angle > 2500:
+        print("angle out of bounds")
         continue
     else:
+        print("normal angle")
     
         #pi.set_servo_pulsewidth(STEER, int(angle))
-        time.sleep(0.2)
+        #time.sleep(0.2)
     #pi.set_servo_pulsewidth(ESC, 1555)
 
 
-    if cv2.waitKey(1)==ord("q"):
+    if cv2.waitKey(100)==ord("q"):
         break
 
 
