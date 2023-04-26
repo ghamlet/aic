@@ -1,22 +1,21 @@
 import cv2 
-
 import numpy as np
 import time
 import os
-import pigpio
+#import pigpio
 
 
-os.system("sudo pigpiod")  # Launching GPIO library
+#os.system("sudo pigpiod")  # Launching GPIO library
 
 
 ESC = 17 
 STEER = 18 
 
-pi = pigpio.pi()
+#pi = pigpio.pi()
 
 time.sleep(2)
 print("podau signal")
-pi.set_servo_pulsewidth(ESC, 1400)
+#pi.set_servo_pulsewidth(ESC, 1400)
 time.sleep(2)
 
 
@@ -65,35 +64,37 @@ while True:
     cv2.circle(frame, (70, 250), 5, (0,0,255), -1)
     cv2.circle(frame, (330, 250), 5, (0,0,255), -1)
 
-    #cv2.imshow("frame", frame)
+    cv2.imshow("frame", frame)
+    k = cv2.waitKey(10)
     
     
 
     
     frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    #cv2.imshow("Gray", frame_gray)
+    cv2.imshow("Gray", frame_gray)
+    k = cv2.waitKey(10)
 
     
 
     binary = cv2.inRange(frame_gray, 210, 255)
     
     binary = cv2.resize(binary, SIZE)
-    #cv2.imshow("Binary", binary)
-
+    cv2.imshow("Binary", binary)
+    k = cv2.waitKey(10)
 
     binary_visual = binary.copy()
 
     
     cv2.polylines(binary_visual, [np.array(TRAP, dtype=np.int32)], True, 255, 2)
-    #cv2.imshow("TRAP", binary_visual )
-
+    cv2.imshow("TRAP", binary_visual )
+    k = cv2.waitKey(10)
 
     M = cv2.getPerspectiveTransform(TRAP, RECT)
 
     perspective = cv2.warpPerspective(binary, M, SIZE, flags=cv2.INTER_LINEAR)
     
-   # cv2.imshow("Perspective", perspective)
-    
+    cv2.imshow("Perspective", perspective)
+    k = cv2.waitKey(10)
 
 
 
@@ -104,7 +105,7 @@ while True:
 
     hist_l = hist[:center]
     hist_r = hist[center:]
-    # print(f""" hist_l={hist_l} 
+    print(f" {hist_l=}")
     # hist_r={hist_r} """)
 
     ind_left = np.argmax(hist_l)
@@ -116,7 +117,8 @@ while True:
 
     cv2.line(out, (ind_left, 0), (ind_left, 299), 255, 2)
     cv2.line(out, (ind_right, 0), (ind_right, 299), 255, 2)
-    #cv2.imshow("Lines", out)
+    cv2.imshow("Lines", out)
+    k = cv2.waitKey(10)
 
     center_road = (ind_left + ind_right) // 2
     #print("center_road",center_road)
@@ -125,19 +127,14 @@ while True:
     Error = center_road - center
     #print('Error',Error)
 
-    angle = 1400 + (Error*10)
+    angle = 1400 + (Error * 10)
     print(angle)
+
     if angle < 510 or angle > 2500:
-        print("error")
+        continue
     else:
     
-    #time.sleep(0.1)
-
-
-    
-
-    
-        pi.set_servo_pulsewidth(STEER, int(angle))
+        #pi.set_servo_pulsewidth(STEER, int(angle))
         time.sleep(0.2)
     #pi.set_servo_pulsewidth(ESC, 1555)
 
