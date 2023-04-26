@@ -49,7 +49,7 @@ cap = cv2.VideoCapture("vid.mp4")
 while True:
     
     ret, frame = cap.read()
-    cv2.waitKey(100)
+    cv2.waitKey(1)
 
     if ret == False:
        print("End of File")
@@ -130,10 +130,10 @@ while True:
     angle = 1400 + (Error * 10)
     print(angle)
 
-    if angle < 510 or angle > 2500:
-        print("angle out of bounds")
-        continue
-    else:
+    if angle in range(510, 2200):
+        #print("angle out of bounds")
+        #continue
+    #else:
         print("normal angle")
     
         #pi.set_servo_pulsewidth(STEER, int(angle))
@@ -141,7 +141,7 @@ while True:
     #pi.set_servo_pulsewidth(ESC, 1555)
 
 
-    if cv2.waitKey(100)==ord("q"):
+    if cv2.waitKey(1)==ord("q"):
         break
 
 
