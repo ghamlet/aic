@@ -62,7 +62,7 @@ TRAP = np.float32([[70, 250],
 
 
 
-cap = cv2.VideoCapture("vid.mp4")
+cap = cv2.VideoCapture(0)
 
 
 while True:
@@ -152,13 +152,13 @@ while True:
     #print('Error',Error)
 
     angle = 1400 + (Error * 10)
-    print(angle)
+    #print(angle)
 
     if angle in range(510, 2200):
         #print("angle out of bounds")
-        #continue
+        continue
     #else:
-        print("normal angle")
+        #print("normal angle")
     
         #pi.set_servo_pulsewidth(STEER, int(angle))
         #time.sleep(0.2)

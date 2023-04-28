@@ -6,15 +6,18 @@ import copy
 
 noDrive = cv2.imread("nodrive.jpg")
 pedestrian = cv2.imread("pedastrian.jpg")
+right = cv2.imread("turn_right.jpg")
 
 noDrive = cv2.resize(noDrive,(64,64))
 pedestrian = cv2.resize(pedestrian,(64,64))
+right = cv2.resize(right,(64,64))
 
 noDrive = cv2.inRange(noDrive,(89,91,149), (255,255,255))
 pedestrian = cv2.inRange(pedestrian,(89,91,149), (255,255,255))
+right = cv2.inRange(right,(89,91,149), (255,255,255))
 
-cv2.imshow("noDrive", noDrive)
-cv2.imshow("pedestrian", pedestrian)
+# cv2.imshow("noDrive", noDrive)
+# cv2.imshow("pedestrian", pedestrian)
 
 
 
@@ -58,6 +61,7 @@ def detect_znak(frame_for_znak):
 
         noDrive_val = 0
         pedestrian_val = 0
+        right_val = 0
 
         for i in range(64):
             for j in range(64):
@@ -66,7 +70,16 @@ def detect_znak(frame_for_znak):
                     noDrive_val +=1
                 if roImg[i][j] == pedestrian[i][j]:
                     pedestrian_val+=1
-        print(f"{noDrive_val}, {pedestrian_val}")
+                if roImg[i][j] == right[i][j]:
+                    right_val+=1
+        print(f" {pedestrian_val=}")
+
+        # if pedestrian_val > 3000:
+        #     print("pedestrian")
+        # elif noDrive_val > 2000:
+        #     print("nodrive")
+        # elif right_val in range(2100, 2300):
+        #     print("right")
 
     
     
