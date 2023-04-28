@@ -2,7 +2,26 @@ import cv2
 import numpy as np
 import time
 import os
+import copy
+
+
 #import pigpio
+import znaki 
+
+
+
+# noDrive = cv2.imread("nodrive.jpg")
+# pedestrian = cv2.imread("pedastrian.jpg")
+
+# noDrive = cv2.resize(noDrive,(64,64))
+# pedestrian = cv2.resize(pedestrian,(64,64))
+
+# noDrive = cv2.inRange(noDrive,(89,91,149), (255,255,255))
+# pedestrian = cv2.inRange(pedestrian,(89,91,149), (255,255,255))
+
+# cv2.imshow("noDrive", noDrive)
+# cv2.imshow("pedestrian", pedestrian)
+
 
 
 #os.system("sudo pigpiod")  # Launching GPIO library
@@ -54,6 +73,11 @@ while True:
     if ret == False:
        print("End of File")
        break
+
+
+    frame_for_znak = copy.copy(frame)
+
+    znaki.detect_znak(frame_for_znak)
 
     
     frame = cv2.resize(frame, SIZE)
