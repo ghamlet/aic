@@ -72,10 +72,10 @@ def detect_znak(frame_for_znak):
                     pedestrian_val+=1
                 if roImg[i][j] == right[i][j]:
                     right_val+=1
-        print(f" {pedestrian_val=}")
+        #print(f" {pedestrian_val=}")
 
-        # if pedestrian_val > 3000:
-        #     print("pedestrian")
+        if pedestrian_val in range(3100, 3500):
+            print("pedestrian")
         # elif noDrive_val > 2000:
         #     print("nodrive")
         # elif right_val in range(2100, 2300):
