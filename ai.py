@@ -5,36 +5,21 @@ import os
 import copy
 
 
-#import pigpio
+import pigpio
 import znaki 
 
 
-
-# noDrive = cv2.imread("nodrive.jpg")
-# pedestrian = cv2.imread("pedastrian.jpg")
-
-# noDrive = cv2.resize(noDrive,(64,64))
-# pedestrian = cv2.resize(pedestrian,(64,64))
-
-# noDrive = cv2.inRange(noDrive,(89,91,149), (255,255,255))
-# pedestrian = cv2.inRange(pedestrian,(89,91,149), (255,255,255))
-
-# cv2.imshow("noDrive", noDrive)
-# cv2.imshow("pedestrian", pedestrian)
-
-
-
-#os.system("sudo pigpiod")  # Launching GPIO library
+os.system("sudo pigpiod")  # Launching GPIO library
 
 
 ESC = 17 
 STEER = 18 
 
-#pi = pigpio.pi()
+pi = pigpio.pi()
 
 time.sleep(2)
 print("podau signal")
-#pi.set_servo_pulsewidth(ESC, 1400)
+pi.set_servo_pulsewidth(ESC, 1400)
 time.sleep(2)
 
 
@@ -77,7 +62,7 @@ while True:
 
     frame_for_znak = copy.copy(frame)
 
-    znaki.detect_znak(frame_for_znak)
+    #znaki.detect_znak(frame_for_znak)
 
     
     frame = cv2.resize(frame, SIZE)
@@ -154,13 +139,13 @@ while True:
     angle = 1400 + (Error * 10)
     #print(angle)
 
-    if angle in range(510, 2200):
+    if angle in range(1000, 2200):
         #print("angle out of bounds")
-        continue
+        
     #else:
         #print("normal angle")
     
-        #pi.set_servo_pulsewidth(STEER, int(angle))
+        pi.set_servo_pulsewidth(STEER, int(angle))
         #time.sleep(0.2)
     #pi.set_servo_pulsewidth(ESC, 1555)
 
