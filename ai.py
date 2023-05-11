@@ -147,7 +147,7 @@ while True:
     
         pi.set_servo_pulsewidth(STEER, int(angle))
         #time.sleep(0.2)
-    #pi.set_servo_pulsewidth(ESC, 1555)
+        pi.set_servo_pulsewidth(ESC, 1500)
 
 
     if cv2.waitKey(1)==ord("q"):
