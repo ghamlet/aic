@@ -53,7 +53,7 @@ cap = cv2.VideoCapture(0)
 while True:
     
     ret, frame = cap.read()
-    cv2.waitKey(1)
+    cv2.waitKey(10)
 
     if ret == False:
        print("End of File")
