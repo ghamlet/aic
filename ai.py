@@ -15,7 +15,7 @@ os.system("sudo pigpiod")  # Launching GPIO library
 ESC = 17 
 STEER = 18 
 
-pi =pigpio.pi('192.168.30.90', 8889)
+pi =pigpio.pi()
 
 time.sleep(2)
 print("podau signal")
