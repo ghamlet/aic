@@ -13,7 +13,11 @@ pi =pigpio.pi()
 time.sleep(2)
 print("podau signal")
 
-for speed in range(1000,2000):
-    pi.set_servo_pulsewidth(ESC, speed)
-    time.sleep(2)
+
+    
+pi.set_servo_pulsewidth(ESC, 1000)
+time.sleep(2)
+
+pi.set_servo_pulsewidth(ESC, 1200)
+time.sleep(2)
 
