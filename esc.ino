@@ -16,6 +16,7 @@ void loop() {
 int val = map(analogRead(0), 0, 1023, 1000, 1500);
 //motor.writeMicroseconds(val); // 1230 
 Serial.println(val);
+//wertyuiofghdgsegfgfgfgfgfgf
 
   
 
