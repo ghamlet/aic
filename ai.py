@@ -6,7 +6,7 @@ import copy
 
 
 import pigpio
-import znaki 
+#import znaki 
 
 
 os.system("sudo pigpiod")  # Launching GPIO library
