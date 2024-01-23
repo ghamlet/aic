@@ -14,11 +14,11 @@ os.system("sudo pigpiod")  # Launching GPIO library
 ESC = 17 
 STEER = 18 
 
-pi =pigpio.pi()
+pi = pigpio.pi('localhost', 8889)
 
 time.sleep(2)
 print("podau signal")
-pi.set_servo_pulsewidth(ESC, 1400)
+#pi.set_servo_pulsewidth(ESC, 1400)
 time.sleep(2)
 
 ESCAPE = 27
