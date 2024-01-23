@@ -8,13 +8,13 @@ import pigpio
 
 
 
-os.system("sudo pigpiod")  # Launching GPIO library
+#os.system("sudo pigpiod")  # Launching GPIO library
 
 
 ESC = 17 
 STEER = 18 
 
-pi = pigpio.pi('localhost', 8889)
+#pi = pigpio.pi('localhost', 8889)
 
 time.sleep(2)
 print("podau signal")
@@ -44,7 +44,7 @@ TRAP = np.float32([[70, 250],
 
 
 
-cap = cv2.VideoCapture(7)
+cap = cv2.VideoCapture(1)
 
 
 while True:
