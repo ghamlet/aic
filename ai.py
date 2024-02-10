@@ -3,26 +3,31 @@ import numpy as np
 import time
 import os
 
+from arduino import Arduino
+# ARDUINO_PORT = '/dev/ttyUSB0'
+# arduino = Arduino(ARDUINO_PORT, baudrate=115200, timeout=10)
+# time.sleep(1)
 
 import pigpio
 
 
 
-#os.system("sudo pigpiod")  # Launching GPIO library
+os.system("sudo pigpiod")  # Launching GPIO library
+time.sleep(2)
 
 
 ESC = 17 
 STEER = 18 
 
-#pi = pigpio.pi('localhost', 8889)
-
+pi = pigpio.pi()
 time.sleep(2)
+
 print("podau signal")
-#pi.set_servo_pulsewidth(ESC, 1400)
+
+pi.set_servo_pulsewidth(STEER, 1400)
 time.sleep(2)
 
-ESCAPE = 27
-key = 1
+
 
 SIZE = (400, 300)
 
@@ -35,17 +40,20 @@ RECT = np.float32([[0, 299],
 
 
 
-TRAP = np.float32([[70, 250],     
-                   [330, 250],  
+TRAP = np.float32([[30, 250],  
+                   [350, 250],  
+                   [330, 200] , #order is important 
+                   [50, 200], 
+                   
 
-                   [280, 200],   
-                   [100, 200]]) 
+                      
+                   ]) 
 
 
 
 
-cap = cv2.VideoCapture(0)
-
+cap = cv2.VideoCapture(0, cv2.CAP_V4L2)
+name = 0
 
 while True:
     
@@ -55,105 +63,93 @@ while True:
        break
 
 
-    cv2.imshow("frame", frame)
-    k = cv2.waitKey(10)
-    if k == ord("q"):
-        break
+    
 
     #frame_for_znak = copy.copy(frame)
     #znaki.detect_znak(frame_for_znak)
 
     
-    # frame = cv2.resize(frame, SIZE)
+    frame = cv2.resize(frame, SIZE)
+    cv2.imshow("frame", frame)
 
-    # cv2.circle(frame, (140, 200), 5, (0,0,255), -1)
-    # cv2.circle(frame, (240, 200), 5, (0,0,255), -1)
-
-    # cv2.circle(frame, (70, 250), 5, (0,0,255), -1)
-    # cv2.circle(frame, (330, 250), 5, (0,0,255), -1)
-
-  #  cv2.imshow("frame", frame)
-    #k = cv2.waitKey(10)
     
     
 
+    cv2.circle(frame, (30, 250), 5, (0,0,255), -1)
+    cv2.circle(frame, (50, 200), 5, (0,0,255), -1)
+
+    cv2.circle(frame, (350, 250), 5, (0,0,255), -1)
+    cv2.circle(frame, (330, 200), 5, (0,0,255), -1)
+
+
+    cv2.imshow("frame", frame)
+    # plt.imshow(frame)
+    # plt.show()
+
+
+    frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    binary = cv2.inRange(frame_gray, 210, 255)
     
-#     frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-#    # cv2.imshow("Gray", frame_gray)
-#     #k = cv2.waitKey(10)
-
-    
-
-#     binary = cv2.inRange(frame_gray, 210, 255)
-    
-#     binary = cv2.resize(binary, SIZE)
-#     #cv2.imshow("Binary", binary)
-#    # k = cv2.waitKey(10)
-
-#     binary_visual = binary.copy()
-
-    
-#     cv2.polylines(binary_visual, [np.array(TRAP, dtype=np.int32)], True, 255, 2)
-#    # cv2.imshow("TRAP", binary_visual )
-#    # k = cv2.waitKey(10)
-
-#     M = cv2.getPerspectiveTransform(TRAP, RECT)
-
-#     perspective = cv2.warpPerspective(binary, M, SIZE, flags=cv2.INTER_LINEAR)
-    
-#    # cv2.imshow("Perspective", perspective)
-#     #k = cv2.waitKey(10)
-
-
-
-#     hist = np.sum(perspective[0:200], axis=0) #axis
-    
-#     center = hist.shape[0] // 2
-#     #print('center',center)
-
-#     hist_l = hist[:center]
-#     hist_r = hist[center:]
-#     #print(f" {hist_l=}")
     
 
-#     ind_left = np.argmax(hist_l)
-#     ind_right = np.argmax(hist_r) + center
-#     #print(ind_left, ind_right)
+    binary_visual = binary.copy()
+    cv2.imshow("binary", binary_visual)
 
-#     out = perspective.copy()
+    
+    cv2.polylines(binary_visual, [np.array(TRAP, dtype=np.int32)], True, 255, 2)
+    M = cv2.getPerspectiveTransform(TRAP, RECT)
+    perspective = cv2.warpPerspective(binary, M, SIZE, flags=cv2.INTER_LINEAR)
+    
+    #cv2.imshow("Perspective", perspective)
     
 
-#     cv2.line(out, (ind_left, 0), (ind_left, 299), 255, 2)
-#     cv2.line(out, (ind_right, 0), (ind_right, 299), 255, 2)
-#     #cv2.imshow("Lines", out)
-#    # k = cv2.waitKey(10)
+    hist = np.sum(perspective[0:200], axis=0) #axis
+    
+    center = hist.shape[0] // 2
+    #print('center',center)
 
-#     center_road = (ind_left + ind_right) // 2
-#     #print("center_road",center_road)
+    hist_l = hist[:center]
+    hist_r = hist[center:]
+    #print(f" {hist_l=}")
+    
+
+    ind_left = np.argmax(hist_l)
+    ind_right = np.argmax(hist_r) + center
+    #print(ind_left, ind_right)
+
+    out = perspective.copy()
+    
+
+    cv2.line(out, (ind_left, 0), (ind_left, 299), 255, 2)
+    cv2.line(out, (ind_right, 0), (ind_right, 299), 255, 2)
+    cv2.imshow("Lines", out)
+    
+
+    center_road = (ind_left + ind_right) // 2
+    #print("center_road",center_road)
    
 
-#     Error = center_road - center
-#     #print('Error',Error)
+    Error = center_road - center
+    #print('Error',Error)
 
-#     angle = 1400 + (Error * 10)
-#     #print(angle)
+    angle = 1400 + (Error * 10)
+    print(angle)
 
-#     if angle in range(1000, 2200):
-#         #print("angle out of bounds")
+    try:
+        pi.set_servo_pulsewidth(STEER, angle)
         
-#     #else:
-#         #print("normal angle")
-    
-#         pi.set_servo_pulsewidth(STEER, int(angle))
-#         #time.sleep(0.2)
-#         pi.set_servo_pulsewidth(ESC, 1500)
+    except:
+        pass
 
 
-    # if cv2.waitKey(1)==ord("q"):
-    #     break
 
 
-    # if cv2.waitKey(1)==ord("a"):
-    #     os.system("sudo killall pigpiod")
-    #     print("sudo killall pigpiod")
-    #     break
+
+    k = cv2.waitKey(1)
+
+    if k == ord("s"):
+       # cv2.imwrite(f"foto/{name}.jpg", frame)
+        name+=1
+
+    elif k == ord("q"):
+        break
