@@ -145,6 +145,7 @@ while True:
 
 
 
+<<<<<<< HEAD
     k = cv2.waitKey(1)
 
     if k == ord("s"):
@@ -153,3 +154,12 @@ while True:
 
     elif k == ord("q"):
         break
+=======
+    # if cv2.waitKey(1)==ord("a"):
+    #     os.system("sudo killall pigpiod")
+    #     print("sudo killall pigpiod")
+    #     break
+
+
+    #######
+>>>>>>> 9dfed87de408c4e96956bfb4e37cd95ebc2626f9
