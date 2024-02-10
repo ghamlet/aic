@@ -69,7 +69,7 @@ while True:
     #znaki.detect_znak(frame_for_znak)
 
     
-    frame = cv2.resize(frame, SIZE)
+    resize = cv2.resize(frame, SIZE)
     cv2.imshow("frame", frame)
 
     
@@ -87,18 +87,28 @@ while True:
     # plt.show()
 
 
-    frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    binary = cv2.inRange(frame_gray, 210, 255)
+    #frame_gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    r_channel = resize[:,:,2]
+    binary = np.zeros_like(r_channel)
+    binary[(r_channel > 200)] = 1
+
+    hls = cv2.cvtColor(resize, cv2.COLOR_BGR2HLS)
+    s_channel = resize[:,:,2]
+    binary2 = np.zeros_like(s_channel)
+    binary2[(r_channel > 250)] = 1 #if road light we above 
+
+    allBinary = np.zeros_like(binary)
+    allBinary[(binary==1) | (binary2==1)] =255
     
     
 
-    binary_visual = binary.copy()
+    binary_visual = allBinary.copy()
     cv2.imshow("binary", binary_visual)
 
     
     cv2.polylines(binary_visual, [np.array(TRAP, dtype=np.int32)], True, 255, 2)
     M = cv2.getPerspectiveTransform(TRAP, RECT)
-    perspective = cv2.warpPerspective(binary, M, SIZE, flags=cv2.INTER_LINEAR)
+    perspective = cv2.warpPerspective(allBinary, M, SIZE, flags=cv2.INTER_LINEAR)
     
     #cv2.imshow("Perspective", perspective)
     
@@ -136,7 +146,8 @@ while True:
     print(angle)
 
     try:
-        pi.set_servo_pulsewidth(STEER, angle)
+        if angle in range(1400, 1800):
+            pi.set_servo_pulsewidth(STEER, angle)
         
     except:
         pass
@@ -145,7 +156,6 @@ while True:
 
 
 
-<<<<<<< HEAD
     k = cv2.waitKey(1)
 
     if k == ord("s"):
@@ -154,12 +164,3 @@ while True:
 
     elif k == ord("q"):
         break
-=======
-    # if cv2.waitKey(1)==ord("a"):
-    #     os.system("sudo killall pigpiod")
-    #     print("sudo killall pigpiod")
-    #     break
-
-
-    #######
->>>>>>> 9dfed87de408c4e96956bfb4e37cd95ebc2626f9

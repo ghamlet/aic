@@ -5,11 +5,13 @@ import os
 import time
 
 cap = cv2.VideoCapture(0)
+
+
 angle = 1400
-
-
-
-
+esc = 1540
+prev_error = 0
+crazy_turn = False
+count_for_turn = 0
 
 os.system("sudo pigpiod")  # Launching GPIO library
 time.sleep(2)
@@ -17,20 +19,21 @@ time.sleep(2)
 
 ESC = 17 
 STEER = 18 
-speed = 0
 
 pi = pigpio.pi()
 time.sleep(2)
 
 print("podau signal")
 
-# pi.set_servo_pulsewidth(STEER, 800)#2400 left , 800
-# time.sleep(2)
+pi.set_servo_pulsewidth(ESC, 1000)#2400 left , 800
+time.sleep(2)
+pi.set_servo_pulsewidth(ESC, 1500)#2400 left , 800
+time.sleep(2)
 
 # pi.set_servo_pulsewidth(STEER, 1800)
 # time.sleep(2)
 
-pi.set_servo_pulsewidth(STEER, 1600) #1900 
+pi.set_servo_pulsewidth(STEER, 1400) #1700 1100 
 time.sleep(2)
 
 SIZE = [200, 360]
@@ -149,39 +152,61 @@ while True:
 
         #print(out_img.shape[0])
 
-        
-        for ver_ind in range(out_img.shape[0]):
-            gor_ind = ((center_fit[0]) * (ver_ind ** 2)+
-                    center_fit[1] * ver_ind +
-                    center_fit[2])
-            
-            high_point = 50
-            low_point = 150
+        high_point = 50
+        low_point = 150
 
-            if ver_ind == low_point:
-                #cv2.circle(out_img, (int(gor_ind), int(ver_ind)), 2, (0,0,255), 5)
-                low_gor_ind = int(gor_ind)
-            elif ver_ind == high_point:
-                #cv2.circle(out_img, (int(gor_ind), int(ver_ind)), 2, (0,0,255), 5)
-                high_gor_ind = int(gor_ind)
-            else:
-                cv2.circle(out_img, (int(gor_ind), int(ver_ind)), 2, (255,0,255), 1)
+        low_gor_ind = ((center_fit[0]) * (low_point ** 2)+ center_fit[1] * low_point + center_fit[2])
+        high_gor_ind = ((center_fit[0]) * (high_point ** 2)+ center_fit[1] * high_point + center_fit[2])
+
+        # for ver_ind in range(out_img.shape[0]):
+        #     gor_ind = ((center_fit[0]) * (ver_ind ** 2)+
+        #             center_fit[1] * ver_ind +
+        #             center_fit[2])
+            
+        #     high_point = 50
+        #     low_point = 150
+
+        #     if ver_ind == low_point:
+        #         #cv2.circle(out_img, (int(gor_ind), int(ver_ind)), 2, (0,0,255), 5)
+        #         low_gor_ind = int(gor_ind)
+        #     elif ver_ind == high_point:
+        #         #cv2.circle(out_img, (int(gor_ind), int(ver_ind)), 2, (0,0,255), 5)
+        #         high_gor_ind = int(gor_ind)
+        #     else:
+        #         cv2.circle(out_img, (int(gor_ind), int(ver_ind)), 2, (255,0,255), 1)
 
 
         #print(low_gor_ind, high_gor_ind)
-        error = high_gor_ind - low_gor_ind
-        if error > 0  and angle > 800:
-            angle-=100
-        elif error < 0  and angle < 2400:
-            angle+=100
+        cur_error = int(high_gor_ind - low_gor_ind)
+        print("cur_error", cur_error)
 
-        print(angle)
-        # try:
-        #     pi.set_servo_pulsewidth(STEER, angle)
+        if abs(cur_error) > 30: #crazy turn
+            count_for_turn+=1
+            if count_for_turn > 5:
+                TURN = True
+            # if not crazy_turn:
+            #     start = time.time()
+            # crazy_turn = True
+
+        # if abs(cur_error - prev_error) > 2:
+
+        #     if cur_error > 0 and angle > 1100:
+        #         angle-=20
+        #     elif cur_error < 0 and angle < 1700:
+        #         angle+=20
+
+        prev_error = cur_error
+        #print(angle)
         
-        # except:
-        #     pass
-        cv2.imshow("frame", frame)
+        pi.set_servo_pulsewidth(STEER, angle)
+        #time.sleep(0.1)
+        
+        
+
+        pi.set_servo_pulsewidth(ESC, esc)
+        #time.sleep(0.2)
+
+        #cv2.imshow("frame", frame)
         # cv2.imshow("binary", allBinary)
         # cv2.imshow("polygon", allBinary_visual)
         # # cv2.imshow("warped", warped)
@@ -189,22 +214,36 @@ while True:
         # # cv2.imshow("windows", out_img)
         # cv2.imshow("CenterLine", out_img)
 
-        k = cv2.waitKey(1)
-        if k == ord("q"):
-            os.system("sudo killall pigpiod")
-            break
+        # k = cv2.waitKey(1)
+        # if k == ord("q"):
+        #     os.system("sudo killall pigpiod")
+        #     break
 
-        elif k == ord("w"):
-            speed+=100
+        # elif k == ord("w"):
+        #     angle+=100
 
-        elif k == ord("s"):
-            speed-=100
+        # elif k == ord("s"):
+        #     angle-=100
 
-        elif k == ord("d"):
-            speed+=10
-        elif k == ord("a"):
-            speed-=10
-        print(speed)
+        # elif k == ord("d"):
+        #     angle+=10
+        # elif k == ord("a"):
+        #     angle-=10
+        
+
+
+        # elif k == ord("i"):
+        #     esc+=100
+
+        # elif k == ord("k"):
+        #     esc-=100
+
+        # elif k == ord("l"):
+        #     esc+=10
+        # elif k == ord("j"):
+        #     esc-=10
+        #print(esc)
+        print(angle)
 
     except:
         pass
