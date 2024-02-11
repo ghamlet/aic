@@ -267,10 +267,10 @@ def cross_center_path_v5(bin): # дорабатываем v3, чтобы рул�
     max_columh = np.max(hist)
     mean_column = np.mean(hist)
     pull_size = max_columh / mean_column
-    print(max_columh)
-    print(mean_column)
-    print(pull_size)
-    print("*----")
+    # print(max_columh)
+    # print(mean_column)
+    # #print(pull_size)
+    # print("*----")
     if pull_size >= 1.6:  # 1.6
         pull_size = int(50 * pull_size)
     else:
@@ -286,6 +286,7 @@ def cross_center_path_v5(bin): # дорабатываем v3, чтобы рул�
     bin_viz[:, bin.shape[1]//2] = 255
     cv2.line(bin_viz, (bin.shape[1]//2, bin.shape[0]), (bin.shape[1]//2-err, bin.shape[0]//2), 255, 4)
     cv2.imshow("cross_path_5", bin_viz)
+    k = cv2.waitKey(1)
 
     return err
 

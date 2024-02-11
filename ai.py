@@ -70,19 +70,19 @@ while True:
 
     
     resize = cv2.resize(frame, SIZE)
-    cv2.imshow("frame", frame)
+    #cv2.imshow("frame", frame)
 
     
     
 
-    cv2.circle(frame, (30, 250), 5, (0,0,255), -1)
-    cv2.circle(frame, (50, 200), 5, (0,0,255), -1)
+    #cv2.circle(frame, (30, 250), 5, (0,0,255), -1)
+    # cv2.circle(frame, (50, 200), 5, (0,0,255), -1)
 
-    cv2.circle(frame, (350, 250), 5, (0,0,255), -1)
-    cv2.circle(frame, (330, 200), 5, (0,0,255), -1)
+    # cv2.circle(frame, (350, 250), 5, (0,0,255), -1)
+    # cv2.circle(frame, (330, 200), 5, (0,0,255), -1)
 
 
-    cv2.imshow("frame", frame)
+    # cv2.imshow("frame", frame)
     # plt.imshow(frame)
     # plt.show()
 
@@ -103,7 +103,7 @@ while True:
     
 
     binary_visual = allBinary.copy()
-    cv2.imshow("binary", binary_visual)
+    #cv2.imshow("binary", binary_visual)
 
     
     cv2.polylines(binary_visual, [np.array(TRAP, dtype=np.int32)], True, 255, 2)
@@ -132,7 +132,7 @@ while True:
 
     cv2.line(out, (ind_left, 0), (ind_left, 299), 255, 2)
     cv2.line(out, (ind_right, 0), (ind_right, 299), 255, 2)
-    cv2.imshow("Lines", out)
+    #cv2.imshow("Lines", out)
     
 
     center_road = (ind_left + ind_right) // 2
@@ -145,12 +145,12 @@ while True:
     angle = 1400 + (Error * 10)
     print(angle)
 
-    try:
-        if angle in range(1400, 1800):
-            pi.set_servo_pulsewidth(STEER, angle)
+    # try:
+    #     if angle in range(1400, 1800):
+    #         pi.set_servo_pulsewidth(STEER, angle)
         
-    except:
-        pass
+    # except:
+    #     pass
 
 
 

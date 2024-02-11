@@ -21,7 +21,7 @@ except:
     new_name = "0"
 
 
-out = cv2.VideoWriter(f"videos/{new_name}.avi", cv2.VideoWriter_fourcc('M','J','P','G'), 30.0, size)
+out = cv2.VideoWriter(f"videos/{new_name}.avi", cv2.VideoWriter_fourcc('M','J','P','G'), 60.0, size)
 
 while True:
     ret, frame = video.read()
