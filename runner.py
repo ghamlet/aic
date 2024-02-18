@@ -55,7 +55,7 @@ try:
         img = cv2.resize(frame, SIZE)
         r_channel = img[:,:,2]
         binary = np.zeros_like(r_channel)
-        binary[(r_channel > 210)] = 1
+        binary[(r_channel > 190)] = 1
 
         hls = cv2.cvtColor(img, cv2.COLOR_BGR2HLS)
         s_channel = img[:,:,2]
@@ -65,30 +65,33 @@ try:
         allBinary = np.zeros_like(binary)
         binary[(binary==1) | (binary2==1)] =255
 
-        #utils.cross_center_path_v2(binary)
+        cv2.imshow("binary", binary)
+        cv2.waitKey(1)
 
-        err = utils.cross_center_path_v5(binary)
-        print(err)
-        #perspective = utils.trans_perspective(binary, TRAP, RECT, SIZE, d=1)
+
+        # err = utils.cross_center_path_v5(binary)
+        # print(err)
+        perspective = utils.trans_perspective(binary, TRAP, RECT, SIZE, d=1)
         
-        #print("Stop line",utils.detect_stop(perspective))
 
-#         left, right = utils.centre_mass(perspective, d=1)
+        print("Stop line", utils.detect_horiz_line_for_turn(binary))
+
+        left, right = utils.centre_mass(perspective, d=1)
         
-#         err = 0 - ((left + right) // 2 - SIZE[0] // 2)
-#         if abs(right - left) < 100:
-#             err = last_err
+        err = 0 - ((left + right) // 2 - SIZE[0] // 2)
+        if abs(right - left) < 100:
+            err = last_err
 
-#         angle = int(90 + KP * err + KD * (err - last_err))
+        angle = int(90 + KP * err + KD * (err - last_err))
 
-#         if angle < 60:
-#             angle = 60
-#         elif angle > 120:
-#             angle = 120
+        if angle < 60:
+            angle = 60
+        elif angle > 120:
+            angle = 120
 
-#         last_err = err
-#         print(f'angle={angle}')
-#        # arduino.set_angle(angle)
+        last_err = err
+        #print(f'angle={angle}')
+       # arduino.set_angle(angle)
 except KeyboardInterrupt as e:
     print('Program stopped!', e)
 

@@ -127,11 +127,24 @@ def centre_mass(perspective, d=0):
     return mid_mass_left, mid_mass_right
 
 
+def detect_horiz_line_for_turn(binary):
+    hist = np.sum(binary, axis=1)
+    maxStrInd = np.argmax(hist)
+    #print(str(hist[maxStrInd] // 255))
+    
+    if hist[maxStrInd]//255 > 160:
+        if maxStrInd > 100:  # 100
+            #print("Time to stop")
+            cv2.line(binary, (0, maxStrInd), (binary.shape[1], maxStrInd), 60, 4)
+            cv2.imshow("STOP", binary)
+            cv2.waitKey(1)
+            return True
+    return False
 
 def detect_stop(perspective):
     hist = np.sum(perspective, axis=1)
     maxStrInd = np.argmax(hist)
-    # print("WhitePixCual" + str(hist[maxStrInd]//255))
+    print(str(hist[maxStrInd]//255))
     if hist[maxStrInd]//255 > 150:
         # print("SL detected. WhitePixselCual: "+str(int(hist[maxStrInd]/255)) + "Ind: " + str(maxStrInd))
         if maxStrInd > 120:  # 100

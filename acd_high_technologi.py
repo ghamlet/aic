@@ -1,8 +1,9 @@
 import cv2 
 import numpy as np
-import pigpio
+#import pigpio
 import os
 import time
+import recording_of_road
 
 from arduino import Arduino
 ARDUINO_PORT = "/dev/ttyACM0"
@@ -16,6 +17,9 @@ time.sleep(1)
 
 
 cap = cv2.VideoCapture(0)
+out = recording_of_road.setup(cap)
+record = False
+
 
 
 angle = 1400
@@ -41,22 +45,11 @@ ERROR = []
 ESC = 17 
 STEER = 18 
 
-# pi = pigpio.pi()
-# time.sleep(2)
+
 
 print("podau signal")
 
 
-
-
-# pi.set_servo_pulsewidth(STEER, 1800)
-# time.sleep(2)
-
-# pi.set_servo_pulsewidth(STEER, 1400) #1700 1100 
-# time.sleep(2)
-
-# pi.set_servo_pulsewidth(ESC, esc)
-# time.sleep(0.2)
 
 SIZE = [200, 360]
 
@@ -85,6 +78,10 @@ try:
         ret, frame = cap.read()
         if not ret:
             break
+        
+        if record:
+            out.write(frame)
+            cv2.waitKey(1)
 
         resized = cv2.resize(frame, (SIZE[1], SIZE[0]))
 
@@ -354,7 +351,6 @@ try:
             
         #print(esc)
         #print(angle)
-        
 except:
     print("jk")
     #arduino.set_angle(1400)  
